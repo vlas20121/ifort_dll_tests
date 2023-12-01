@@ -1,0 +1,28 @@
+todo: to setup static runtime linking
+libifcoremd.dll
+
+LIBIFCOREMT.LIB
+G:\PF\Intel\oneApi\compiler\2021.1.2>dir /b /s libifcoremt.lib
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\ia32_win\libifcoremt.lib
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\intel64_win\libifcoremt.lib
+
+G:\PF\Intel\oneApi\compiler\2021.1.2>dir /b /s libmmt.lib
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\ia32_win\libmmt.lib
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\intel64_win\libmmt.lib
+
+static .vs dynamic RTL:
+	/nologo /O2 /fpp /I"F:\HG\TestGroup\ifort_dll_tests\CMake\build" /I"F:\HG\TestGroup\ifort_dll_tests\CMake\build/Release" /I"F:\HG\TestGroup\ifort_dll_tests\CMake" /I"F:\HG\TestGroup\ifort_dll_tests\CMake/Release" /DNDEBUG /DCMAKE_INTDIR=\"Release\" /module:".\Release" /object:"helloworld.dir\Release\\" /Fd"helloworld.dir\Release\vc160.pdb" /libs:static /threads /c
+	/nologo /O2 /fpp /I"F:\HG\TestGroup\ifort_dll_tests\CMake\build" /I"F:\HG\TestGroup\ifort_dll_tests\CMake\build/Release" /I"F:\HG\TestGroup\ifort_dll_tests\CMake" /I"F:\HG\TestGroup\ifort_dll_tests\CMake/Release" /DNDEBUG /DCMAKE_INTDIR=\"Release\" /module:".\Release" /object:"helloworld.dir\Release\\" /Fd"helloworld.dir\Release\vc160.pdb" /libs:dll /threads /c
+
+	/nologo /O2 /I"F:\HG\TestGroup\ifort_dll_tests\x64\Debug" /module:"x64\Release\\" /object:"x64\Release\\" /Fd"x64\Release\vc160.pdb" /libs:static /threads /c
+	/nologo /O2 /I"F:\HG\TestGroup\ifort_dll_tests\x64\Debug" /module:"x64\Release\\" /object:"x64\Release\\" /Fd"x64\Release\vc160.pdb" /libs:dll /threads /c
+	/O2 /I"F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build" /I"F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build/Release" /I"F:\HG\TestGroup\cmaket\1CMake_ifort_msvc" /I"F:\HG\TestGroup\cmaket\1CMake_ifort_msvc/Release" /DCMAKE_INTDIR=\"Release\" /module:".\Release" /object:"helloworld.dir\Release\\" /Fd"helloworld.dir\Release\vc160.pdb" /libs:dll /threads /c
+
+
+/OUT:"x64\Release\TWICE_call.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"x64\Release" /MANIFEST /MANIFESTFILE:"x64\Release\TWICE_call.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /SUBSYSTEM:CONSOLE /IMPLIB:"F:\HG\TestGroup\ifort_dll_tests\x64\Release\TWICE_call.lib" TWICE_dll.lib
+/OUT:"x64\Release\TWICE_call.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"x64\Release" /MANIFEST /MANIFESTFILE:"x64\Release\TWICE_call.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /SUBSYSTEM:CONSOLE /IMPLIB:"F:\HG\TestGroup\ifort_dll_tests\x64\Release\TWICE_call.lib" TWICE_dll.lib
+
+<Configuration Name="Release|x64" OutputDirectory="F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build\Release" IntermediateDirectory="helloworld.dir\Release" TargetName="helloworld">
+	<Tool Name="VFFortranCompilerTool" AdditionalOptions="/c /c" AdditionalIncludeDirectories="F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build;F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build/$(ConfigurationName);F:\HG\TestGroup\cmaket\1CMake_ifort_msvc;F:\HG\TestGroup\cmaket\1CMake_ifort_msvc/$(ConfigurationName)" PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;" ModulePath=".\$(ConfigurationName)" ExceptionHandling="0"/>
+<Configuration Name="Release|x64" OutputDirectory="F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build\Release" IntermediateDirectory="helloworld.dir\Release" TargetName="helloworld">
+	<Tool Name="VFFortranCompilerTool" AdditionalOptions="/c /c" AdditionalIncludeDirectories="F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build;F:\HG\TestGroup\cmaket\1CMake_ifort_msvc\build/$(ConfigurationName);F:\HG\TestGroup\cmaket\1CMake_ifort_msvc;F:\HG\TestGroup\cmaket\1CMake_ifort_msvc/$(ConfigurationName)" PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;" ModulePath=".\$(ConfigurationName)" RuntimeLibrary="rtMultiThreadedDLL" ExceptionHandling="0"/>

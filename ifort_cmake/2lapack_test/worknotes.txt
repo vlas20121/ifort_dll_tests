@@ -1,0 +1,15 @@
+dir /b /s ifconsol.lib                    
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\ia32_win\ifconsol.lib
+G:\PF\Intel\oneApi\compiler\2021.1.2\windows\compiler\lib\intel64_win\ifconsol.lib
+
+https://blog.kitware.com/fortran-for-cc-developers-made-easier-with-cmake/
+IFortInstallDir
+	https://discourse.cmake.org/t/cmake-cannot-find-ifconsol-lib/2668/3
+	http://www.cmake.org/files/lapack_test.tar.gz
+
+$(IFortInstallDir) -> $(IFORT_COMPILER19)
+--
+$(VSInstallDir)VC\Tools\MSVC\$(VCToolsVersion)\bin\HostX64\x64;$(UniversalCRTSdkDir)bin\$(UCRTVersion)\x64;$(UniversalCRTSdkDir)bin\x64;$(IFortInstallDir)bin\Intel64;$(VSInstallDir)Common7\ide;$(VSInstallDir)Common7\Tools;$(FrameworkDir)$(FrameworkVersion);$(WindowsSdkDir)bin\x64;$(PATH)
+$(UniversalCRTSdkDir)Include\$(UCRTVersion)\um;$(UniversalCRTSdkDir)Include\$(UCRTVersion)\shared;$(IFortInstallDir)compiler\include;$(IFortInstallDir)compiler\include\Intel64;$(IFortInstallDir)..\..\..\mkl\latest\include;$(VSInstallDir)VC\Tools\MSVC\$(VCToolsVersion)\atlmfc\include;$(WindowsSdkDir)include\um;$(WindowsSdkDir)include\shared;$(FrameworkSDKDir)include;
+$(VSInstallDir)VC\Tools\MSVC\$(VCToolsVersion)\lib\x64;$(UniversalCRTSdkDir)Lib\$(UCRTVersion)\um\x64;$(UniversalCRTSdkDir)Lib\$(UCRTVersion)\ucrt\x64;$(IFortInstallDir)compiler\lib\Intel64_win;$(IFortInstallDir)..\..\..\mkl\latest\lib\intel64;$(VSInstallDir)VC\Tools\MSVC\$(VCToolsVersion)\atlmfc\lib\x64;$(WindowsSdkDir)lib\winv6.3\um\x64;
+/Qlocation,link,"$(VSInstallDir)VC\Tools\MSVC\$(VCToolsVersion)\bin\HostX64\x64"

@@ -1,0 +1,197 @@
+﻿toodo
+done1: 
++=test call c++ callback function from fortran
++=test function
++=test module/interface
+
+links:
+    https://stackoverflow.com/questions/2825843/passing-a-fortran-int-array-to-c-by-calling-c-function-in-fortran
+    http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html
+    http://arnholm.org/software/cppf77/cppf77.htm#Section3.5.2 Passing single-dimension array parameters
+    http://arnholm.org/software/cppf77/cppf77.htm#Section3.5.3 Passing multi-dimension array parameters
+    http://arnholm.org/software/cppf77/cppf77.htm#Section3.5.4 Passing single-value COMPLEX parameters
+    https://stackoverflow.com/questions/28563775/passing-a-dynamic-2d-array-from-c-to-fortran-and-back -bad
+    https://stackoverflow.com/questions/5901476/sending-and-receiving-2d-array-over-mpi/5901671#5901671
+    https://northstar-www.dartmouth.edu/doc/solaris-forte/manuals/fortran/prog_guide/11_cfort.html
+examples:
+ifort64.dll
+    subroutine TWICE(x,y)
+        IMPLICIT NONE
+        !DEC$ ATTRIBUTES DLLEXPORT::TWICE
+        REAL, INTENT(IN) :: x
+        REAL, INTENT(OUT) :: y
+        ...
+    END SUBROUTINE TWICE
+
+call drom c++
+    extern "C" void TWICE(int& x, int& y);
+call drom ifort
+    !DEC$ ATTRIBUTES DLLIMPORT ::TWICE
+    REAL :: x,y
+    x=9
+    CALL TWICE(x,y)
+
+Test
+{POINTER: 1 pointers in fortran
+    https://gcc.gnu.org/onlinedocs/gcc-4.2.4/gfortran/MALLOC.html
+
+    A FORTRAN 77 pointer can be passed to a C routine as a pointer to a pointer because the Fortran routine passes arguments by reference.
+    {Fortran calls C
+        {Fortran
+            REAL X
+            POINTER (P2X, X)
+            EXTERNAL PASS
+            P2X = MALLOC64(4) !????
+            X = 0.
+            CALL PASS(P2X)
+            ...
+         }
+         {C
+            void pass_(x)
+            int **x;
+            {
+            **x = 100.1;
+            }
+        }
+    }
+    {C calls Fortran
+        {
+            extern void fpass_( p2x );
+            ...
+            float *x;
+            float *p2x;
+            p2x = &x;
+            fpass_(p2x) ;
+            ...
+        }
+        {Fortran
+            SUBROUTINE FPASS (P2X)
+            REAL X
+            POINTER (P2X, X)
+            X = 0.
+            ...
+        }
+    }
+}
+{TYPE  
+    {TYPE 
+        http://www.jaist.ac.jp/iscenter-new/mpc/altix/altixdata/opt/intel/fc/10.0.026/doc/main_for/mergedProjects/lref_for/source_files/rfderty.htm
+    }
+    {Fortran95  calls C
+        TYPE point
+            SEQUENCE
+            REAL :: x, y, z
+        END TYPE point
+        TYPE (point) base
+
+        EXTERNAL flip
+        ...
+        CALL flip( base)
+        ...
+        ------------------------------
+        struct point {
+        float x,y,z;
+        };
+        void flip_( struct point *v )
+        {
+        float t;
+        t = v -> x;
+        v -> x = v -> y;
+        v -> y = t;
+        v -> z = -2.*(v -> z);
+        }
+    }
+    {C calls Fortran95 
+        struct point {
+        float x,y,z;
+        };
+        extern void fflip_ (
+        struct point *) ;
+        ...
+        struct point d;
+        struct point *ptx = &d;
+        ...
+        fflip_ (ptx);
+        ...
+        ------------------------------
+        SUBROUTINE FFLIP( P )
+        TYPE POINT
+            REAL :: X, Y, Z
+        END TYPE POINT
+        TYPE (POINT) P
+        REAL :: T
+        T = P%X
+        P%X = P%Y
+        P%Y = T
+        P%Z = -2.*P%Z
+        ...
+    }
+    {EXTENDS
+        https://stackoverflow.com/questions/25410476/understanding-fortran-extends-types-and-override
+
+        TYPE CQUAD                  ! 200/00  QuadElements
+             SEQUENCE
+             INTEGER   NR             !  elementnumber
+             INTEGER   NODE(4)        !  nodenumbers
+             INTEGER   MAT            !  materialnumber
+             REAL*4    DET(0:2)       !  Parameter of Jacobi Determinant
+             REAL*4    THICK(0:4)     !  element thickness
+             REAL*4    T(3,3)         !  transformation matrix
+         END TYPE CQUAD
+      
+         TYPE, EXTENDS(CQUAD) :: C_QUAD     ! EXTENDED QUAD STRUCTURE 
+               INTEGER, POINTER :: SGRP(:)    ! OPTIONAL LIST OF SECONDARY GROUPS
+         END TYPE C_QUAD
+
+         TYPE (CQUAD)  :: DQ 
+         TYPE (C_QUAD) :: CQ
+
+         call c_read_stream(DQ)
+
+         cq%CQUAD=DQ
+
+        END
+    }
+    {OOP
+        https://en.wikibooks.org/wiki/Fortran/OOP_in_Fortran
+    }
+}
+{Fortran common block
+    http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html
+
+    Fortran common block and global C/C++ extern structs of same name are equivalent. 
+    Never use un-named common blocks! Reference variables in same order, same type and with the same name for both C and FORTRAN. 
+    Character data is aligned on word boundaries.
+
+          FORTRAN:
+               DOUBLE PRECISION X
+               INTEGER A, B, C
+               COMMON/ABC/ X, A, B, C
+ 
+          C:
+               extern struct{
+                   double x;
+                   int a, b, c;
+               } abc_;
+ 
+          C++:
+             extern "C" {
+               extern struct{
+                   double x;
+                   int a, b, c;
+               } abc_;
+             }
+}
+{data align 
+    https://habr.com/ru/company/intel/blog/262933/
+     !DIR$ ATTRIBUTES ALIGN: base :: variable
+}
+
+Exploring & testing fortran language types using for c++ to Fortran API communication: 
+common block,pointers
+classes
+
+
+{pointer to c++ function
+https://scicomp.stackexchange.com/questions/285/how-to-work-with-function-pointers-in-fortran-in-scientific-programs
+}

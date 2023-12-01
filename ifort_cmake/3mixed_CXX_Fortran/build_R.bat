@@ -1,0 +1,1 @@
+call _build_common.bat Release

@@ -1,0 +1,35 @@
+В Fortran какая-то мутная концепция POINTER,
+ ничего общего с с++ pointer она не имеет.
+В результате я так и не смог преобразовать указатель c++ в указатель фортрана, 
+зато указатель c++ в фортране элементарно описывается как массив(там все параметры фактически c++ указатели), 
+нужно только еще передать размер массива.
+
+Поэтому нам указатель фортрана не нужен, 
+а для безопасной передачи NULL массива в Fortran нужно только указать нулевой размер(2d массив - аналогично):
+============c++:
+extern "C" void DOUBLE_ARRAY1(double* a, const int& n);//эта функция реализована на Fortran
+void t
+{
+    const int size = 10;
+    double a[size]={1};
+    
+    //call fortran
+    DOUBLE_ARRAY1(a, size);
+
+    //safe call fortran with NULL array
+    DOUBLE_ARRAY1(nullptr, 0);
+}
+
+============Fortran:
+subroutine DOUBLE_ARRAY1(a,n)
+    IMPLICIT NONE
+    !DEC$ ATTRIBUTES DLLEXPORT::DOUBLE_ARRAY1
+    INTEGER , INTENT(IN) :: n
+    REAL*8 , INTENT(INOUT) :: a(n)
+
+    INTEGER :: I;
+
+    DO I=1,n
+        a(I)=a(I)*10
+    ENDDO
+END SUBROUTINE DOUBLE_ARRAY1
